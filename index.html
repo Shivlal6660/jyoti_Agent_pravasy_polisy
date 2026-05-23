@@ -43,7 +43,7 @@
             backdrop-filter: blur(2px);
         }
 
-        /* Header with logo (uses your repo's image) */
+        /* Header with logo */
         .header {
             padding: 12px 20px;
             margin: 8px 16px 0 16px;
@@ -168,7 +168,7 @@
         <div class="logo">
             <img src="RJS.jpg" alt="RJS Logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/48?text=RJS';">
         </div>
-        <div class="company-name">Rajputana Jyoti System06 (opc) private limited</div>
+        <div class="company-name">Rajputanajyoti system06 (opc) pvt. ltd</div>
     </div>
 
     <!-- Scrollable legal content -->
@@ -187,7 +187,7 @@
 </div>
 
 <script>
-    // ---------------------- FULL LEGAL TEXT (मर्ज किया गया) ----------------------
+    // ---------------------- FULL LEGAL TEXT (MERGED FROM PREVIOUS FILES) ----------------------
     const aboutCompanyText = `Rajputana Jyoti System (OPC) Pvt. Ltd. (RJS) is an Indian Deep‑Tech startup, officially registered on 18 February 2026 with the Ministry of Corporate Affairs (MCA). The Company is headquartered in Bhilwara District, Rajasthan, and operates from Jaipur. Founded and directed by Shiv Lal Salvi, RJS is built on the “Make in India” vision – to create a sovereign, secure, and globally competitive technology ecosystem originating from the grassroots of India. RJS focuses on research and development in artificial intelligence, advanced computing, privacy‑first architectures, and zero‑retention server infrastructure. The Company strictly avoids private shareholders or foreign investors, seeking only strategic alliances and grants from the Government of Rajasthan and the Central Government of India.`;
 
     const aboutLogoText = `The official logo of Rajputana Jyoti System (RJS) incorporates the map of Rajasthan, honouring the land of Rajputs – a region known for valour, heritage, and now digital innovation. The name “Rajputana” refers to the historical name of Rajasthan, representing bravery and royal legacy. “Jyoti” means light or energy, symbolising the illuminating power of artificial intelligence that drives progress. “System” denotes the complete, integrated technological ecosystem that RJS is building – from AI software to future industrial hardware. The logo therefore signifies: “From the heart of Rajasthan, we bring the light of AI as a complete system to serve India and the world.”`;
@@ -316,19 +316,15 @@
     window.addEventListener('resize', checkBottom);
     setTimeout(checkBottom, 100);
 
-    // Send message to Flutter WebView (works with both JavaScript channel and custom scheme)
+    // Send message to Flutter WebView
     function sendToFlutter(action) {
-        // Method 1: ReactNativeWebView (common for webview_flutter)
+        // For webview_flutter's JavaScript channel
         if (window.ReactNativeWebView) {
             window.ReactNativeWebView.postMessage(JSON.stringify({ action: action }));
         }
-        // Method 2: Flutter specific JavaScript channel (you can name it 'flutterChannel')
-        if (window.flutterChannel) {
-            window.flutterChannel.postMessage(JSON.stringify({ action: action }));
-        }
-        // Method 3: Use custom URL scheme as fallback (will trigger navigation)
-        if (!window.ReactNativeWebView && !window.flutterChannel) {
-            window.location.href = `jyoti://${action}`;
+        // As a fallback, you can also use a custom URL scheme
+        if (!window.ReactNativeWebView && window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: action }, '*');
         }
     }
 
